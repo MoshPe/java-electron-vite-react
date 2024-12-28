@@ -59,6 +59,7 @@ jobs:
 
       - name: Commit new version
         run: |
+          git pull
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add electron/package.json electron/package-lock.json
@@ -98,6 +99,7 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          files: electron/dist/*.exe
+          artifacts: electron/dist/*.exe
+          tag: "v${{ steps.package-version.outputs.current-version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
