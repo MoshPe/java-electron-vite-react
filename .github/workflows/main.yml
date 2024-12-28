@@ -107,12 +107,12 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "MoshPe-v${{ needs.build.outputs.version }}"  # Adjust based on your setup
+          name: "MoshPe-v${{ needs.build.outputs.version }}.zip"  # Adjust based on your setup
    
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "MoshPe-v${{ needs.build.outputs.version }}"
+          artifacts: "MoshPe-v${{ needs.build.outputs.version }}.zip"
           tag: "v${{ needs.build.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
