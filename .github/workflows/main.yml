@@ -61,7 +61,7 @@ jobs:
         id: package-version
         uses: zvonimirsun/read-package-version-actions@v2
         with: 
-          path: "./electron/package.json"
+          path: "./electron"
 
            
       - name: Commit new version
