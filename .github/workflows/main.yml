@@ -89,29 +89,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: get-npm-version
+      - name: Read package.json
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-        with:
-          path: electron
+        uses: zvonimirsun/read-package-version-actions@v2
+        with: 
+          path: "./electron"
           
       - name: Create Git tag
         run: |
-          echo "Tagging with version: v${{ steps.package-version.outputs.current-version}}"
-          git tag "v${{ steps.package-version.outputs.current-version}}"
-          git push origin "v${{ steps.package-version.outputs.current-version}}"
+          echo "Tagging with version: v${{ steps.package-version.outputs.version }}"
+          git tag "v${{ steps.package-version.outputs.version }}"
+          git push origin "v${{ steps.package-version.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "MoshPe-v${{ steps.package-version.outputs.current-version}}"  # Adjust based on your setup
+          name: "MoshPe-v${{ steps.package-version.outputs.version }}"  # Adjust based on your setup
    
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "MoshPe-v${{ steps.package-version.outputs.current-version}}"
-          tag: "v${{ steps.package-version.outputs.current-version}}"
+          artifacts: "MoshPe-v${{ steps.package-version.outputs.version }}"
+          tag: "v${{ steps.package-version.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
