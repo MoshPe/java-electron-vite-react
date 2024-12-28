@@ -15,7 +15,7 @@ mkdirSync(buildDir, { recursive: true });
 
 // Step 1: Build Maven project
 console.log('Building Maven project...');
-const mavenBuild = spawnSync('D:\\"Software Utils"\\Aqua\\plugins\\maven\\lib\\maven3\\bin\\mvn', ['clean', 'package', '-DskipTests'], {
+const mavenBuild = spawnSync('mvn', ['clean', 'package', '-DskipTests'], {
     cwd: join(__dirname, '..', '..', 'backend'), // Set the working directory to your backend project
     stdio: 'inherit', // Display Maven output in the console
     shell: true,
