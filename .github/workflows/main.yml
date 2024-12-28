@@ -51,6 +51,12 @@ jobs:
           cd electron
           npm run build  # Ensure this command builds your Electron app (e.g., using electron-builder)
 
+      - name: Bump version
+        run: |
+          cd electron
+          # Bump version
+          npm version minor -m "Bump version to %s"
+          
       - name: Get version from package.json
         id: get_version
         run: |
