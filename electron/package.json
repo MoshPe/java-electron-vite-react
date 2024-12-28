@@ -10,7 +10,7 @@
   },
   "build": {
     "productName": "MoshPe",
-    "icon": "C:\\Users\\Peretz\\Pictures\\Logos\\poortal_revolutin.ico",
+    "icon": "./assets/poortal_revolutin.ico",
     "files": [
       {
         "from": "build/frontend",
