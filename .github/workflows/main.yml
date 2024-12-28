@@ -72,7 +72,11 @@ jobs:
           git add electron/package.json electron/package-lock.json
           git commit -m "Bump version to ${{ steps.package-version.outputs.version }}"
           git push origin dev
-          echo "VERSION=${{ steps.package-version.outputs.version }}" >> $GITHUB_ENV
+          
+      - name: Set VERSION output
+        run: echo "VERSION=${{ steps.package-version.outputs.version }}" >> $GITHUB_ENV
+        id: version_output
+        continue-on-error: true   
           
       # Upload the packaged Electron `.exe` as an artifact
       - name: Upload Release Artifact
@@ -80,7 +84,9 @@ jobs:
         with:
           name: "MoshPe-v${{ steps.package-version.outputs.version }}"
           path: electron/dist/*.exe  # Adjust the path where your .exe is built
-
+    outputs:
+      version: ${{ steps.package-version.outputs.version }}
+      
   release:
     runs-on: ubuntu-latest
     needs: build
@@ -92,21 +98,21 @@ jobs:
 
       - name: Create Git tag
         run: |
-          echo "Tagging with version: v${{ env.VERSION }}"
-          git tag "v${{ env.VERSION }}"
-          git push origin "v${{ env.VERSION }}"
+          echo "Tagging with version: v${{ needs.build.outputs.version }}"
+          git tag "v${{ needs.build.outputs.version }}"
+          git push origin "v${{ needs.build.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "MoshPe-v${{ env.VERSION }}"  # Adjust based on your setup
+          name: "MoshPe-v${{ needs.build.outputs.version }}"  # Adjust based on your setup
    
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "MoshPe-v${{ env.VERSION }}"
-          tag: "v${{ env.VERSION }}"
+          artifacts: "MoshPe-v${{ needs.build.outputs.version }}"
+          tag: "v${{ needs.build.outputs.version }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
