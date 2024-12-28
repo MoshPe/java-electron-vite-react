@@ -70,7 +70,7 @@ jobs:
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: electron-app
+          name: "MoshPe-${{ steps.get_version.outputs.version }}"
           path: electron/dist/*.exe  # Adjust the path where your .exe is built
 
   release:
@@ -99,7 +99,7 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: electron/dist/*.exe
+          artifacts: "MoshPe-${{ steps.get_version.outputs.version }}"
           tag: "v${{ steps.package-version.outputs.current-version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
