@@ -72,6 +72,7 @@ jobs:
           git add electron/package.json electron/package-lock.json
           git commit -m "Bump version to ${{ steps.package-version.outputs.version }}"
           git push origin dev
+          echo "VERSION=${{ steps.package-version.outputs.version }}" >> $GITHUB_ENV
           
       # Upload the packaged Electron `.exe` as an artifact
       - name: Upload Release Artifact
@@ -88,30 +89,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Read package.json
-        id: package-version
-        uses: zvonimirsun/read-package-version-actions@v2
-        with: 
-          path: "./electron"
-          
+
       - name: Create Git tag
         run: |
-          echo "Tagging with version: v${{ steps.package-version.outputs.version }}"
-          git tag "v${{ steps.package-version.outputs.version }}"
-          git push origin "v${{ steps.package-version.outputs.version }}"
+          echo "Tagging with version: v${{ env.VERSION }}"
+          git tag "v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: "MoshPe-v${{ steps.package-version.outputs.version }}"  # Adjust based on your setup
+          name: "MoshPe-v${{ env.VERSION }}"  # Adjust based on your setup
    
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "MoshPe-v${{ steps.package-version.outputs.version }}"
-          tag: "v${{ steps.package-version.outputs.version }}"
+          artifacts: "MoshPe-v${{ env.VERSION }}"
+          tag: "v${{ env.VERSION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
