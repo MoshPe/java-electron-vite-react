@@ -1,0 +1,52 @@
+{
+  "name": "electron",
+  "version": "1.0.2",
+  "description": "",
+  "main": "main.js",
+  "productName": "MoshPe",
+  "scripts": {
+    "prepare-build": "node scripts/prepareBuild.js",
+    "build": "npm run prepare-build && electron-builder"
+  },
+  "build": {
+    "productName": "MoshPe",
+    "icon": "C:\\Users\\Peretz\\Pictures\\Logos\\poortal_revolutin.ico",
+    "files": [
+      {
+        "from": "build/frontend",
+        "to": "frontend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      "main.js",
+      "package.json",
+      {
+        "from": "build/backend",
+        "to": "backend",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "backend/**/*"
+    ],
+    "extraResources": [
+      "build/backend/backend-jar-with-dependencies.jar"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron-log": "^5.2.4",
+    "fs-extra": "^11.2.0",
+    "tree-kill": "^1.2.2"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  }
+}
