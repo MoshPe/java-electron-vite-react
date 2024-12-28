@@ -15,23 +15,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Build the backend (if necessary, e.g., Java with Maven or Gradle)
+      # Build the backend
       - name: Set up Java 17
-        uses: actions/setup-java@v3
+        uses: s4u/setup-java@3
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Set up maven
+        uses: s4u/maven-settings-action@v3.1. 
 
       - name: Install backend dependencies (Java)
         run: |
           cd backend
-          ./mvnw clean compile  # Use your actual Java build command (e.g., Maven or Gradle)
+          mvn clean compile
         
-      # Build the frontend (if applicable, e.g., React or Angular)
+      # Build the frontend
       - name: Set up Node.js for frontend
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Adjust to your Node.js version
+          node-version: '20'
 
       - name: Install frontend dependencies
         run: |
