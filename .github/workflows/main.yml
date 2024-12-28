@@ -17,7 +17,7 @@ jobs:
 
       # Build the backend
       - name: Set up Java 17
-        uses: actions/setup-java@3
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
