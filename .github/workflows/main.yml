@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Set up maven
-        uses: s4u/maven-settings-action@v3.1. 
+        uses: s4u/maven-settings-action@v3.1.0 
 
       - name: Install backend dependencies (Java)
         run: |
