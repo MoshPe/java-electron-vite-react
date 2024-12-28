@@ -51,6 +51,12 @@ jobs:
           cd electron
           npm run build  # Ensure this command builds your Electron app (e.g., using electron-builder)
 
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          cd electron
+          echo "VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
+
       # Upload the packaged Electron `.exe` as an artifact
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v3
@@ -64,7 +70,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        
+      - name: Create Git tag
+        run: |
+          git tag "v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
