@@ -61,15 +61,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add package.json package-lock.json
+          git add electron/package.json electron/package-lock.json
           git commit -m "Bump version to ${{ steps.get_version.outputs.version }}"
           git push origin dev
-          
-      - name: Get version from package.json
-        id: get_version
-        run: |
-          cd electron
-          echo "VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
           
       # Upload the packaged Electron `.exe` as an artifact
       - name: Upload Release Artifact
@@ -85,11 +79,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+        with:
+          path: electron
+          
       - name: Create Git tag
         run: |
-          echo "Tagging with version: v${{ env.VERSION }}"
-          git tag "v${{ env.VERSION }}"
-          git push origin "v${{ env.VERSION }}"
+          echo "Tagging with version: v${{ steps.package-version.outputs.current-version}}"
+          git tag "v${{ steps.package-version.outputs.current-version}}"
+          git push origin "v${{ steps.package-version.outputs.current-version}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
